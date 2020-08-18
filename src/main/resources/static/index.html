@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Insert title here</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>WebSocket Spring Boot Chat Project</h1>
+        <div id="messages">
+        </div>
+        <form>
+            <input type="text">
+            <button type="submit">Send</button>
+        </form>
+    </div>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+
+<script>
+    const form = document.querySelector("form");
+    const input = form.querySelector("input");
+    const messages = document.querySelector("#messages");
+
+    form.addEventListener("submit", connect);
+
+    function connect(event) {
+        const newMessage = document.createElement("p");
+        newMessage.innerHTML = input.value;;
+        messages.appendChild(newMessage);
+
+        event.preventDefault();
+    }
+</script>
+
+</html>
