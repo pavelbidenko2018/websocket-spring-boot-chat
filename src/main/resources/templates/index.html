@@ -8,57 +8,9 @@
 
 <body>
 
-    <!-- <script type="text/javascript">
-        // let stompClient = null;
-
-        // function onconnect(frame) {
-        //     setConnected(true);
-        //     console.log('Connected: ' + frame);
-        //     onconnected();
-        // }
-
-        // function showMessageOutput(messageOutput) {
-        //     const payload = JSON.parse(messageOutput.body);
-        //     var response = document.getElementById('response');
-        //     var p = document.createElement('p');
-        //     p.style.wordWrap = 'break-word';
-        //     p.appendChild(document.createTextNode(payload.from + ": " +
-        //         payload.text + " (" + payload.time + ")"));
-        //     response.appendChild(p);
-        // }
-
-        // function onMessageReceived(payload) {
-        //     var message = JSON.parse(payload.body);
-
-        //     var messageElement = document.createElement('li');
-
-        //     if (message.type === 'CONNECT') {
-        //         messageElement.classList.add('event-message');
-        //         message.content = message.sender + ' joined!';
-        //     } else if (message.type === 'DISCONNECT') {
-        //         messageElement.classList.add('event-message');
-        //         message.content = message.sender + ' left!';
-        //     } else {
-        //         messageElement.classList.add('chat-message');
-
-        //         var avatarElement = document.createElement('i');
-        //         var avatarText = document.createTextNode(message.sender[0]);
-        //         avatarElement.appendChild(avatarText);
-        //         avatarElement.style['background-color'] = getAvatarColor(message.sender);
-
-        //         messageElement.appendChild(avatarElement);
-
-        //         var usernameElement = document.createElement('span');
-        //         var usernameText = document.createTextNode(message.sender);
-        //         usernameElement.appendChild(usernameText);
-        //         messageElement.appendChild(usernameElement);
-        //     }
-
-        // }
-    </script> -->
-
     <body>
         <div>
+            <div id='messages'></div>
             <div>
                 <input type="text" id="from" placeholder="Choose a nickname" />
             </div>
@@ -80,7 +32,6 @@
     </body>
 
     <script th:src="@{/webjars/stomp-websocket/2.3.1/stomp.min.js}"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script> -->
     <script th:src="@{/webjars/sockjs-client/1.1.2/sockjs.js}" type="text/javascript"></script>
 
     <script th:src="@{./js/handlers.js}" type="text/javascript"></script>

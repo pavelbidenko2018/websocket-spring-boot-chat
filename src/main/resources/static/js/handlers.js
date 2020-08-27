@@ -1,13 +1,9 @@
 let stompClient = null;
 const ENDPOINT_URI = '/ws';
-const SUBSCRIBE_URI = '/app/topic/messages';
+const SUBSCRIBE_URI = '/topic/messages';
 const SEND_URI = '/app/chat';
 
-function onconnect(frame) {
-    setConnected(true);
-    console.log('frame');
-    stompClient.subscribe(SUBSCRIBE_URI, onreceive);
-}
+const SEND_USER = '/app/chat.addUser';
 
 function onerror(frame) {
     console.log(frame);
@@ -21,6 +17,12 @@ function onreceive(payload) {
     } else {
         console.log("got empty message");
     }
+}
+
+function onconnect(frame) {
+    setConnected(true);
+    console.log('frame');
+    stompClient.subscribe(SUBSCRIBE_URI, (payload) => console.log(payload));
 }
 
 function disconnect() {
@@ -42,20 +44,36 @@ function sendMessage() {
 }
 
 function sendName() {
-    var name = document.getElementById('from').value;
-    stompClient.send(SEND_URI, {}, JSON.stringify({ 'name': name }));
+    let name = document.getElementById('from').value;
+    stompClient.send(SEND_USER, {}, JSON.stringify({ 'from': name, 'text': "" }));
+}
+
+function showMessage(content) {
+    const messages = document.getElementById('messages');
+
+    if (content.messageType === 'SEND') {
+        const newMessage = document.createElement('P');
+        newMessage.innerHTML = `${content.time}::${content.text}`;
+        messages.appendChild(newMessage);
+    } else if (content.messageType === 'CONNECT') {
+        const greeting = document.createElement('h2');
+
+        greeting.innerHTML = `Welcome, ${content.from}`;
+        messages.appendChild(greeting);
+    }
+
+    console.log('text:' + content);
 }
 
 function connect() {
     const socket = new SockJS('/ws');
     stompClient = Stomp.over(socket);
-    stompClient.connect({}, onconnect);
+    stompClient.connect({}, (frame) => {
+        setConnected(true);
+        sendName();
+        console.log('Connected: ' + frame);
+        stompClient.subscribe('/topic/messages', (payload) => {
+            showMessage(JSON.parse(payload.body));
+        });
+    });
 }
-
-// function(frame) {
-//     setConnected(true);
-//     sendName();
-//     console.log('Connected: ' + frame);
-//     stompClient.subscribe('/topic/greetings', function(greeting) {
-//         showGreeting(JSON.parse(greeting.body).content);
-//     });
